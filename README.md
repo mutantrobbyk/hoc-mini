@@ -167,7 +167,7 @@ Now we will create a higher-order component that will add form logic to any form
               { ...this.props } />
   }
   ```
-- Notice that the render method is returning the component that was passed into the `withForm` HOC.
+- Notice that the render method is returning the `WrappedComponent` that is passed into the `withForm` HOC.
 - Also, we put the methods we want to pass as props to the `WrappedComponent` on an object named `form`.  This will help us make sure we aren't interfering with other prop names that are being passed on.
 
 
@@ -369,8 +369,8 @@ class App extends Component {
     return (
       <div className="App">
         <SuperSecret isAuthenticated={true}/>
-        <LoginForm handleSubmit={formdata => console.log('form data:', formData)} />
-        <RegistrationForm handleSubmit={formdata => console.log('form data:', formData)} />
+        <LoginForm handleSubmit={formData => console.log('form data:', formData)} />
+        <RegistrationForm handleSubmit={formData => console.log('form data:', formData)} />
       </div>
     );
   }
