@@ -17,8 +17,6 @@ In this project, we will practice making higher-order components (HOC) to better
   - HOCs
   - components
 
-<img src="readme-assets/setup.png" />
-
 ## HOC 1
 
 ### Summary
@@ -55,16 +53,16 @@ export default function withAuthentication(WrappedComponent) {
 
 - Inside the components folder, create the following file:
   - SuperSecret.js
-- Because this component is "super secret", we only want authenticated users to see it.  So we will use the `withAuthentication` HOC to add logic to out component.  
+- Because this component is "super secret", we only want authenticated users to see it.  So we will use the `withAuthentication` HOC to add logic to our component.  
 - import `React` and `withAuthentication`.
 - create a functional component called `SuperSecret` that renders the followng:
 ```js
 <div style={{ margin: 20, border: '1px solid green'}}>
   <h1>This is top secret!</h1>
-  <p>only certain people can see this</p>
+  <p>only an authenticated user can see this</p>
 </div>
 ```
-- Next, create a new component by passing in `SuperSecret` into `withAuthentication` and have this new component be the `export default`
+- Next, create a new component by invokine `withAuthentication` and passing in `SuperSecret`.  This new component be the `export default`.
 - When we use this new component, we can pass a prop called `isAuthenticated` and if the value is `true` the component will show, if it is `false` it will not.
 
 ### Solution
@@ -82,7 +80,7 @@ function SuperSecret(props) {
   return (
     <div style={{ margin: 20, border: '1px solid green'}}>
       <h1>This is top secret!</h1>
-      <p>only certain people can see this</p>
+      <p>only an authenticated user can see this</p>
     </div>
   )
 }
@@ -134,10 +132,10 @@ Now we will create a higher-order component that will add form logic to any form
 
 - Inside the HOCs folder, create the following file:
   - withForm.js
-- Create a function `withForm` that takes in a component as it's parameter and returns a class component.
-- Let's give this class component a name `WithForm` (this is optional).
-- `WithFrom` will have the foloowing 3 methods:
-  - handleChnage
+- Create a function `withForm` that takes in a component as it's parameter and returns a class component.  We will need to import `React` and `Component` since we are returning a class component.
+- Let's give this class component a name `WithForm`.
+- `WithFrom` will have the following 3 methods:
+  - handleChange
   ```js
   handleChange = e => {
     let { value, name } = e.target
@@ -228,7 +226,7 @@ export default function(WrappedComponent) {
   </div>
   ```
 - Create a new component by invoking `withForm` and passing in `LoginForm`.  This new component will be the `export default`.
-- Now, in `RegistrationForm.js` import `React` and `withForm`.  Create a functional component `RegistrationForm`, that returns:
+- In `RegistrationForm.js` import `React` and `withForm`.  Create a functional component `RegistrationForm`, that returns:
   ```js
   <div>
     <h1>Registration Form</h1>
@@ -256,7 +254,7 @@ export default function(WrappedComponent) {
   </div>
   ```
 - Create a new component by invoking `withForm` and passing in `LoginForm`.  This new component will be the `export default`.
-- Notice the `name` attribute on each of the `input` elements.  We are using the `name` attribute in the `withForm` HOC as the key for the object we pass into `setState`.
+- Notice the `name` attribute on each of the `input` elements.  We are using the `name` attribute in the `withForm` HOC as the key for the object we pass into `setState` in the `handleChange` method.
 
 ### Solution
 
@@ -265,7 +263,7 @@ export default function(WrappedComponent) {
 <summary> <code> ./src/components/LoginForm.js </code> </summary>
 
 ```js
-import React, { Component } from 'react'
+import React from 'react'
 
 import withForm from '../HOCs/withForm'
 
@@ -298,7 +296,7 @@ export default withForm(LoginForm)
 <summary> <code> ./src/components/RegistrationForm.js </code> </summary>
 
 ```js
-import React, { Component } from 'react'
+import React from 'react'
 
 import withForm from '../HOCs/withForm'
 
@@ -353,7 +351,7 @@ import './App.css';
 
 import SuperSecret from './components/SuperSecret'
 import LoginForm from './components/LoginForm'
-import RegistrationForm from './components/RegistrationForm
+import RegistrationForm from './components/RegistrationForm'
 
 class App extends Component {
   render() {
