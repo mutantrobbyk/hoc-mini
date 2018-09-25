@@ -56,7 +56,7 @@ export default function withAuthentication(WrappedComponent) {
 - Because this component is "super secret", we only want authenticated users to see it.  So we will use the `withAuthentication` HOC to add logic to our component.  
 - import `React` and `withAuthentication`.
 - create a functional component called `SuperSecret` that renders the followng:
-```js
+```jsx
 <div style={{ margin: 20, border: '1px solid green'}}>
   <h1>This is top secret!</h1>
   <p>only an authenticated user can see this</p>
