@@ -58,10 +58,12 @@ export default function withAuthentication(WrappedComponent) {
 - import `React` and `withAuthentication`.
 - create a functional component called `SuperSecret` that renders the followng:
 ```jsx
-<div style={{ margin: 20, border: '1px solid green'}}>
-  <h1>This is top secret!</h1>
-  <p>only an authenticated user can see this</p>
-</div>
+(
+  <div style={{ margin: 20, border: '1px solid green'}}>
+    <h1>This is top secret!</h1>
+    <p>only an authenticated user can see this</p>
+  </div>
+)
 ```
 - Next, create a new component by invoking `withAuthentication` and passing in `SuperSecret`.  This new component be the `export default`.
 - When we use this new component, we can pass a prop called `isAuthenticated` and if the value is `true` the component will show, if it is `false` it will not.
