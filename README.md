@@ -27,9 +27,10 @@ We will create a high-order component that will check if a user is authenticated
 
 - Inside the HOCs folder, create the following file:
   - withAuthentication.js
+- Import `React`.  React must be in scope when using jsx.
 - Create a function `withAuthentication` that takes in a component as it's parameter and returns a functional component.
 - The functional component should return the component that was passed into the `withAuthentication` function if `props.isAuthenticated` is true, and `null` if it is false.
-- With HOCs it is important that you pass any props that will be passed to the component made from using the HOC, to the component that is passed in to the HOC.  You can do this with object destructuring.
+- With HOCs it is important that you pass any props that will be passed to the component made from using the HOC, to the component that is passed into the HOC.  You can do this with object destructuring.
 
 ### Solution
 
@@ -62,7 +63,7 @@ export default function withAuthentication(WrappedComponent) {
   <p>only an authenticated user can see this</p>
 </div>
 ```
-- Next, create a new component by invokine `withAuthentication` and passing in `SuperSecret`.  This new component be the `export default`.
+- Next, create a new component by invoking `withAuthentication` and passing in `SuperSecret`.  This new component be the `export default`.
 - When we use this new component, we can pass a prop called `isAuthenticated` and if the value is `true` the component will show, if it is `false` it will not.
 
 ### Solution
@@ -122,6 +123,7 @@ export default App;
 
 </details>
 
+
 ## HOC 2
 
 ### Summary
@@ -154,15 +156,18 @@ Now we will create a higher-order component that will add form logic to any form
   - render
   ```jsx
   render() {
-    let form = { ...this.state }
+    let form = {
+      handleChange: this.handleChange,
+      handleSubmit: this.handleSubmit
+    }
 
     return <WrappedComponent
-              handleChange={this.handleChange}
-              handleSubmit={this.handleSubmit}
               form={form}
               { ...this.props } />
   }
   ```
+- Notice that the render method is returning the component that was passed into the `withForm` HOC.  We are passing the `handleChange` and `handleSubmit` methods as props.
+- Also, we put the methods we want to pass as props to the `WrappedComponent` on an object named `form`.  This will help us make sure we aren't interfering with other prop names that are being passed on.
 
 
 ### Solution
@@ -189,13 +194,14 @@ export default function(WrappedComponent) {
     }
 
     render() {
-      let form = { ...this.state }
-      
+      let form {
+        handleChange: this.handleChange,
+        handleSubmit: this.handleSubmit
+      }
+
       return <WrappedComponent 
-                handleChange={this.handleChange}
-                handleSubmit={this.handleSubmit}
-                {...this.props}
-                form={form}/>
+                form={form}
+                { ...this.props } />
     }
   }
 }
@@ -209,51 +215,55 @@ export default function(WrappedComponent) {
   - LoginForm.js
   - RegistrationForm.js
 - In `LoginForm.js` import `React` and `withForm`.  Then, create a functional component `LoginForm`, that returns the following:
-  ```jsx 
-  <div>
-    <h1>Login Form</h1>
-    <input 
-      type="text" 
-      name="email" 
-      placeholder="email"
-      onChange={props.handleChange}/>
-    <input 
-      type="text" 
-      name="password" 
-      placeholder="password"
-      onChange={props.handleChange}/>
-    <button onClick={props.handleSubmit}>submit</button>
-  </div>
+  ```jsx
+  ( 
+    <div>
+      <h1>Login Form</h1>
+      <input 
+        type="text" 
+        name="email" 
+        placeholder="email"
+        onChange={props.form.handleChange}/>
+      <input 
+        type="text" 
+        name="password" 
+        placeholder="password"
+        onChange={props.form.handleChange}/>
+      <button onClick={props.form.handleSubmit}>submit</button>
+    </div>
+  )
   ```
 - Create a new component by invoking `withForm` and passing in `LoginForm`.  This new component will be the `export default`.
 - In `RegistrationForm.js` import `React` and `withForm`.  Create a functional component `RegistrationForm`, that returns:
   ```jsx
-  <div>
-    <h1>Registration Form</h1>
-    <input 
-      type="text" 
-      name="name" 
-      placeholder="name"
-      onChange={props.handleChange}/>
-    <input 
-      type="text" 
-      name="email" 
-      placeholder="email"
-      onChange={props.handleChange}/>
-    <input 
-      type="text" 
-      name="password" 
-      placeholder="password"
-      onChange={props.handleChange}/>
-    <input 
-      type="text" 
-      name="confirmPassword" 
-      placeholder="confirm Password"
-      onChange={props.handleChange}/>
-    <button onClick={props.handleSubmit}>submit</button>
-  </div>
+  (
+    <div>
+      <h1>Registration Form</h1>
+      <input 
+        type="text" 
+        name="name" 
+        placeholder="name"
+        onChange={props.form.handleChange}/>
+      <input 
+        type="text" 
+        name="email" 
+        placeholder="email"
+        onChange={props.form.handleChange}/>
+      <input 
+        type="text" 
+        name="password" 
+        placeholder="password"
+        onChange={props.form.handleChange}/>
+      <input 
+        type="text" 
+        name="confirmPassword" 
+        placeholder="confirm Password"
+        onChange={props.form.handleChange}/>
+      <button onClick={props.form.handleSumbit}>submit</button>
+    </div>
+  )
   ```
-- Create a new component by invoking `withForm` and passing in `LoginForm`.  This new component will be the `export default`.
+- Create a new component by invoking `withForm` and passing in `RegistrationForm`.  This new component will be the `export default`.
 - Notice the `name` attribute on each of the `input` elements.  We are using the `name` attribute in the `withForm` HOC as the key for the object we pass into `setState` in the `handleChange` method.
 
 ### Solution
@@ -275,13 +285,13 @@ function LoginForm(props) {
         type="text" 
         name="email" 
         placeholder="email"
-        onChange={props.handleChange}/>
+        onChange={props.form.handleChange}/>
       <input 
         type="text" 
         name="password" 
         placeholder="password"
-        onChange={props.handleChange}/>
-      <button onClick={props.handleSubmit}>submit</button>
+        onChange={props.form.handleChange}/>
+      <button onClick={props.form.handleSubmit}>submit</button>
     </div>
   )
 }
@@ -308,23 +318,23 @@ function RegistrationForm(props) {
         type="text" 
         name="name" 
         placeholder="name"
-        onChange={props.handleChange}/>
+        onChange={props.form.handleChange}/>
       <input 
         type="text" 
         name="email" 
         placeholder="email"
-        onChange={props.handleChange}/>
+        onChange={props.form.handleChange}/>
       <input 
         type="text" 
         name="password" 
         placeholder="password"
-        onChange={props.handleChange}/>
+        onChange={props.form.handleChange}/>
       <input 
         type="text" 
         name="confirmPassword" 
         placeholder="confirm Password"
-        onChange={props.handleChange}/>
-      <button onClick={props.handleSubmit}>submit</button>
+        onChange={props.form.handleChange}/>
+      <button onClick={props.form.handleSubmit}>submit</button>
     </div>
   )
 }
