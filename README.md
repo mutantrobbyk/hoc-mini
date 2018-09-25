@@ -37,7 +37,7 @@ We will create a high-order component that will check if a user is authenticated
 
 <summary> <code> ./src/HOCs/withAuthentication.js </code> </summary>
 
-```js
+```jsx
 import React from 'react'
 
 export default function withAuthentication(WrappedComponent) {
@@ -71,7 +71,7 @@ export default function withAuthentication(WrappedComponent) {
 
 <summary> <code> ./src/components/SuperSecret.js </code> </summary>
 
-```js
+```jsx
 import React from 'react'
 
 import withAuthentication from '../HOCs/withAuthentication'
@@ -101,7 +101,7 @@ export default withAuthentication(SuperSecret)
 
 <summary> <code> ./src/App.js </code> </summary>
 
-```js
+```jsx
 import React, { Component } from 'react';
 import './App.css';
 
@@ -152,7 +152,7 @@ Now we will create a higher-order component that will add form logic to any form
   }
   ```
   - render
-  ```js
+  ```jsx
   render() {
     let form = { ...this.state }
 
@@ -171,7 +171,7 @@ Now we will create a higher-order component that will add form logic to any form
 
 <summary> <code> ./src/HOCs/withForm.js </code> </summary>
 
-```js
+```jsx
 import React, { Component } from 'react'
 
 export default function(WrappedComponent) {
@@ -209,7 +209,7 @@ export default function(WrappedComponent) {
   - LoginForm.js
   - RegistrationForm.js
 - In `LoginForm.js` import `React` and `withForm`.  Then, create a functional component `LoginForm`, that returns the following:
-  ```js 
+  ```jsx 
   <div>
     <h1>Login Form</h1>
     <input 
@@ -227,7 +227,7 @@ export default function(WrappedComponent) {
   ```
 - Create a new component by invoking `withForm` and passing in `LoginForm`.  This new component will be the `export default`.
 - In `RegistrationForm.js` import `React` and `withForm`.  Create a functional component `RegistrationForm`, that returns:
-  ```js
+  ```jsx
   <div>
     <h1>Registration Form</h1>
     <input 
@@ -262,7 +262,7 @@ export default function(WrappedComponent) {
 
 <summary> <code> ./src/components/LoginForm.js </code> </summary>
 
-```js
+```jsx
 import React from 'react'
 
 import withForm from '../HOCs/withForm'
@@ -295,7 +295,7 @@ export default withForm(LoginForm)
 
 <summary> <code> ./src/components/RegistrationForm.js </code> </summary>
 
-```js
+```jsx
 import React from 'react'
 
 import withForm from '../HOCs/withForm'
@@ -345,7 +345,7 @@ export default withForm(RegistrationForm)
 
 <summary> <code> ./src/App.js </code> </summary>
 
-```js
+```jsx
 import React, { Component } from 'react';
 import './App.css';
 
