@@ -167,7 +167,7 @@ Now we will create a higher-order component that will add form logic to any form
               { ...this.props } />
   }
   ```
-- Notice that the render method is returning the component that was passed into the `withForm` HOC.  We are passing the `handleChange` and `handleSubmit` methods as props.
+- Notice that the render method is returning the component that was passed into the `withForm` HOC.
 - Also, we put the methods we want to pass as props to the `WrappedComponent` on an object named `form`.  This will help us make sure we aren't interfering with other prop names that are being passed on.
 
 
