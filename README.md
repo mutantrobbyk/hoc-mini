@@ -28,7 +28,7 @@ We will create a high-order component that will check if a user is authenticated
 - Inside the HOCs folder, create the following file:
   - withAuthentication.js
 - Import `React`.  React must be in scope when using jsx.
-- Create a function `withAuthentication` that takes in a component as it's parameter and returns a functional component.
+- Create a function `withAuthentication` that takes in a component as it's parameter `WrappedComponent` and returns a functional component.
 - The functional component should return the component that was passed into the `withAuthentication` function if `props.isAuthenticated` is true, and `null` if it is false.
 - With HOCs it is important that you pass any props that will be passed to the component made from using the HOC, to the component that is passed into the HOC.  You can do this with object destructuring.
 
@@ -65,8 +65,8 @@ export default function withAuthentication(WrappedComponent) {
   </div>
 )
 ```
-- Next, create a new component by invoking `withAuthentication` and passing in `SuperSecret`.  This new component be the `export default`.
-- When we use this new component, we can pass a prop called `isAuthenticated` and if the value is `true` the component will show, if it is `false` it will not.
+- Next, create a new component by invoking `withAuthentication` and passing in `SuperSecret`.  This new component will be the `export default`.
+- When we use this new component, we can pass a prop called `isAuthenticated` and if the value is `true` the component will render, if it is `false` it will not.
 
 ### Solution
 
@@ -136,7 +136,7 @@ Now we will create a higher-order component that will add form logic to any form
 
 - Inside the HOCs folder, create the following file:
   - withForm.js
-- Create a function `withForm` that takes in a component as it's parameter and returns a class component.  We will need to import `React` and `Component` since we are returning a class component.
+- Create a function `withForm` that takes in a component as it's parameter `WrappedComponent` and returns a class component.  We will need to import `React` and `Component` since we are returning a class component.
 - Let's give this class component a name `WithForm`.
 - `WithFrom` will have the following 3 methods:
   - handleChange
