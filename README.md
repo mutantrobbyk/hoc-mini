@@ -192,29 +192,29 @@ export default function (WrappedComponent) {
 - In `AccordianMenu.js` import `React` and `withToggle`.  Create a functional component `AccordianMenu`.
   ```jsx
   function AccordianMenu(props) {
-  let { toggle } = props
-  return (
-    <div>
-      <div id="title" style={styles.menuTitle} onClick={toggle.handleChange}>
-        {props.title}
+    let { toggle } = props
+    return (
+      <div>
+        <div id="title" style={styles.menuTitle} onClick={toggle.handleChange}>
+          {props.title}
+        </div>
+        {toggle.value && <div id="body" style={styles.menuBody}>{props.children}</div> }
       </div>
-      {toggle.value && <div id="body" style={styles.menuBody}>{props.children}</div> }
-    </div>
-  )
-}
-
-let styles = {
-  menuTitle: {
-    border: '1px solid black',
-    padding: 20
-  },
-  menuBody: {
-    border: '1px solid black',
-    borderTop: 'none',
-    backgroundColor: '#F0F0F0',
-    padding: 20
+    )
   }
-}
+
+  let styles = {
+    menuTitle: {
+      border: '1px solid black',
+      padding: 20
+    },
+    menuBody: {
+      border: '1px solid black',
+      borderTop: 'none',
+      backgroundColor: '#F0F0F0',
+      padding: 20
+    }
+  }
   ```
 - Let's walk through what is happening here.  First, we are grabbing the toggle object from props which we will have access to once we pass `AccordianMenu` into `withToggle`.  Then, we have a click event on the first child `div` so when we click on it, the `handleChange` method from `withToggle` will be invoked and update the value of `toggle`.  Below that, we are checking to see if the value of `toggle` is `truthy`, and if it is, we render a `div` for the body.  Notice that between the body `div` tags we are rendering `props.childred`.  `props.children` refers to the elements between the opening and closing tags of the `AccordianMenu` component, when we use the component. 
 - Create a new component by invoking `withToggle` and passing in `AccordianMenu`.  This new component will be the `export default`.
