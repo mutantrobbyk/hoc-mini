@@ -130,79 +130,44 @@ export default App;
 
 ### Summary
 
-Now we will create a higher-order component that will add form logic to any form component.  That way we only have to write the logic once (hanldling input change and submitting the form), and we can add it to any form component
+Now we will create a higher-order component that will add toggle logic to a component.  We can use this HOC with any component that needs to toggle something.
 
 ### Step 1
 
 - Inside the HOCs folder, create the following file:
-  - withForm.js
+  - withToggle.js
 - Import `React` and `Component`.
-- Create a function `withForm` that takes in a component as it's parameter `WrappedComponent` and returns a class component with the following 3 methods:
-  - handleChange
-  ```js
-  handleChange = e => {
-    let { value, name } = e.target
-    
-    this.setState({
-      [name]: value
-    })
-  }
-  ```
-  - handleSubmit
-  ```js
-  handleSumbit = e => {
-    this.props.handleSubmit(this.state)
-  }
-  ```
-  - render
-  ```jsx
-  render() {
-    let form = {
-      handleChange: this.handleChange,
-      handleSubmit: this.handleSubmit
-    }
-
-    return <WrappedComponent
-              form={form}
-              { ...this.props } />
-  }
-  ```
-- Notice that the render method is returning the `WrappedComponent` that is passed into the `withForm` HOC.
-- Also, we put the methods we want to pass as props to the `WrappedComponent` on an object named `form`.  This will help us make sure we aren't interfering with other prop names that are being passed on.
-
+- Create a function `withToggle` that takes in a component as it's parameter `WrappedComponent` and returns a class component `WithToggle`.  `WithToggle` should have state with one property `toggle` that is set to `false`.
+- `WithToggle` should have a method `handleChange` that will update the component's state and change the value of `toggle` to the opposite of its current value.
+- In the render method, create an object named `toggle` that will store the `value` of `this.state.toggle`, and the `handleChange` method.  Then, return the `WrappedComponent` and pass the `toggle` object as a prop.  Make sure to also pass on the rest of the props `{ ...props }`
 
 ### Solution
 
 <details>
 
-<summary> <code> ./src/HOCs/withForm.js </code> </summary>
+<summary> <code> ./src/HOCs/withToggle.js </code> </summary>
 
 ```jsx
 import React, { Component } from 'react'
 
-export default function(WrappedComponent) {
-  return class WithForm extends Component {
+export default function (WrappedComponent) {
+  return class WithToggle extends Component {
+    state = {
+      toggle: false
+    }
+  
     handleChange = e => {
-      let { value, name } = e.target
-      
       this.setState({
-        [name]: value
+        toggle: !this.state.toggle
       })
     }
-
-    handleSubmit = e => {
-      this.props.handleSubmit(this.state)
-    }
-
+  
     render() {
-      let form {
-        handleChange: this.handleChange,
-        handleSubmit: this.handleSubmit
+      let toggle = {
+        value: this.state.toggle,
+        handleChange: this.handleChange
       }
-
-      return <WrappedComponent 
-                form={form}
-                { ...this.props } />
+      return <WrappedComponent toggle={toggle} { ...this.props }/>
     }
   }
 }
@@ -213,142 +178,123 @@ export default function(WrappedComponent) {
 ### Step 2
 
 - Inside the components folder, create the following files:
-  - LoginForm.js
-  - RegistrationForm.js
-- In `LoginForm.js` import `React` and `withForm`.  Then, create a functional component `LoginForm`, that returns the following:
+  - OnOffButton.js
+  - AccordianMenu.js
+- In `OnOffButton.js` import `React` and `withToggle`.  Then, create a functional component `OnOffButton`, that returns the following:
   ```jsx
   ( 
-    <div>
-      <h1>Login Form</h1>
-      <input 
-        type="text" 
-        name="email" 
-        placeholder="email"
-        onChange={props.form.handleChange}/>
-      <input 
-        type="text" 
-        name="password" 
-        placeholder="password"
-        onChange={props.form.handleChange}/>
-      <button onClick={props.form.handleSubmit}>submit</button>
-    </div>
+    <button onClick={toggle.handleChange}>
+      <h1>{ toggle.value ? 'ON' : 'OFF' }</h1>
+    </button>
   )
   ```
-- Create a new component by invoking `withForm` and passing in `LoginForm`.  This new component will be the `export default`.
-- In `RegistrationForm.js` import `React` and `withForm`.  Create a functional component `RegistrationForm`, that returns:
+- Create a new component by invoking `withToggle` and passing in `OnOffButton`.  This new component will be the `export default`.
+- In `AccordianMenu.js` import `React` and `withToggle`.  Create a functional component `AccordianMenu`.
   ```jsx
-  (
+  function AccordianMenu(props) {
+  let { toggle } = props
+  return (
     <div>
-      <h1>Registration Form</h1>
-      <input 
-        type="text" 
-        name="name" 
-        placeholder="name"
-        onChange={props.form.handleChange}/>
-      <input 
-        type="text" 
-        name="email" 
-        placeholder="email"
-        onChange={props.form.handleChange}/>
-      <input 
-        type="text" 
-        name="password" 
-        placeholder="password"
-        onChange={props.form.handleChange}/>
-      <input 
-        type="text" 
-        name="confirmPassword" 
-        placeholder="confirm Password"
-        onChange={props.form.handleChange}/>
-      <button onClick={props.form.handleSumbit}>submit</button>
+      <div id="title" style={styles.menuTitle} onClick={toggle.handleChange}>
+        {props.title}
+      </div>
+      {toggle.value && <div id="body" style={styles.menuBody}>{props.children}</div> }
     </div>
   )
+}
+
+let styles = {
+  menuTitle: {
+    border: '1px solid black',
+    padding: 20
+  },
+  menuBody: {
+    border: '1px solid black',
+    borderTop: 'none',
+    backgroundColor: '#F0F0F0',
+    padding: 20
+  }
+}
   ```
-- Create a new component by invoking `withForm` and passing in `RegistrationForm`.  This new component will be the `export default`.
-- Notice the `name` attribute on each of the `input` elements.  We are using the `name` attribute in the `withForm` HOC as the key for the object we pass into `setState` in the `handleChange` method.
+- Let's walk through what is happening here.  First, we are grabbing the toggle object from props which we will have access to once we pass `AccordianMenu` into `withToggle`.  Then, we have a click event on the first child `div` so when we click on it, the `handleChange` method from `withToggle` will be invoked and update the value of `toggle`.  Below that, we are checking to see if the value of `toggle` is `truthy`, and if it is, we render a `div` for the body.  Notice that between the body `div` tags we are rendering `props.childred`.  `props.children` refers to the elements between the opening and closing tags of the `AccordianMenu` component, when we use the component. 
+- Create a new component by invoking `withToggle` and passing in `AccordianMenu`.  This new component will be the `export default`.
 
 ### Solution
 
 <details>
 
-<summary> <code> ./src/components/LoginForm.js </code> </summary>
+<summary> <code> ./src/components/OnOffButton.js </code> </summary>
 
 ```jsx
 import React from 'react'
 
-import withForm from '../HOCs/withForm'
+import withToggle from '../HOCs/withToggle'
 
-function LoginForm(props) {
+function OnOffButton(props) {
+  let { toggle } = props
   return (
-    <div>
-      <h1>Login Form</h1>
-      <input 
-        type="text" 
-        name="email" 
-        placeholder="email"
-        onChange={props.form.handleChange}/>
-      <input 
-        type="text" 
-        name="password" 
-        placeholder="password"
-        onChange={props.form.handleChange}/>
-      <button onClick={props.form.handleSubmit}>submit</button>
-    </div>
+    <button style={styles.button} onClick={toggle.handleChange}>
+      <h1>{ toggle.value ? 'ON' : 'OFF' }</h1>
+    </button>
   )
 }
 
-export default withForm(LoginForm)
+export default withToggle(OnOffButton)
+
+let styles = {
+  button: {
+    border: '1px solid orange',
+    borderRadius: '3px',
+    padding: 20,
+    margin: 20
+  }
+}
 ```
 
 </details>
 
 <details>
 
-<summary> <code> ./src/components/RegistrationForm.js </code> </summary>
+<summary> <code> ./src/components/AccordianMenu.js </code> </summary>
 
 ```jsx
 import React from 'react'
 
-import withForm from '../HOCs/withForm'
+import withToggle from '../HOCs/withToggle'
 
-function RegistrationForm(props) {
+function AccordianMenu(props) {
+  let { toggle } = props
   return (
     <div>
-      <h1>Registration Form</h1>
-      <input 
-        type="text" 
-        name="name" 
-        placeholder="name"
-        onChange={props.form.handleChange}/>
-      <input 
-        type="text" 
-        name="email" 
-        placeholder="email"
-        onChange={props.form.handleChange}/>
-      <input 
-        type="text" 
-        name="password" 
-        placeholder="password"
-        onChange={props.form.handleChange}/>
-      <input 
-        type="text" 
-        name="confirmPassword" 
-        placeholder="confirm Password"
-        onChange={props.form.handleChange}/>
-      <button onClick={props.form.handleSubmit}>submit</button>
+      <div style={styles.menuTitle} onClick={toggle.handleChange}>
+        {props.title}
+      </div>
+      {toggle.value && <div style={styles.menuBody}>{props.children}</div> }
     </div>
   )
 }
 
-export default withForm(RegistrationForm)
+export default withToggle(AccordianMenu )
+
+let styles = {
+  menuTitle: {
+    border: '1px solid black',
+    padding: 20
+  },
+  menuBody: {
+    border: '1px solid black',
+    borderTop: 'none',
+    backgroundColor: '#F0F0F0',
+    padding: 20
+  }
+}
 ```
 
 </details>
 
 ### Step 3
 
-- In App.js, bring in our newly created `LoginForm` and `RegistrationForm` components and add them to the jsx code in the render method.
-- Pass a prop to both components called `handleSubmit` with a function that takes in a parameter `formData` and logs it to the console.
+- In App.js, bring in our newly created `OnOffButton` and `AccordianMenu` components and add them to the jsx code in the render method.
 
 ### Solution
 
@@ -361,16 +307,18 @@ import React, { Component } from 'react';
 import './App.css';
 
 import SuperSecret from './components/SuperSecret'
-import LoginForm from './components/LoginForm'
-import RegistrationForm from './components/RegistrationForm'
+import OnOffButton from './components/OnOffButton'
+import AccordianMenu from './components/AccordianMenu'
 
 class App extends Component {
   render() {
     return (
       <div className="App">
         <SuperSecret isAuthenticated={true}/>
-        <LoginForm handleSubmit={formData => console.log('form data:', formData)} />
-        <RegistrationForm handleSubmit={formData => console.log('form data:', formData)} />
+        <OnOffButton />
+        <AccordianMenu title="Aloha!" >
+          <p> this p tag is the "props.children" for the AccordianMenu component </p>
+        </AccordianMenu>
       </div>
     );
   }
