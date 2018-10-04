@@ -2,7 +2,7 @@
 
 # Project Summary
 
-In this project, we will practice making higher-order components (HOC) to better understand this technique for reusing component logic. A higher-order component is a function that takes in a component and returns a new component.
+In this project, we will practice making higher-order components (HOC) to better understand this technique for reusing component logic. A higher-order component is a function that takes in a component as an argument and returns a new component.
 
 ## Setup
 
@@ -14,7 +14,7 @@ In this project, we will practice making higher-order components (HOC) to better
 - Run `npm start`.
 - In a seperate terminal, `cd` into the project directory.
 - Create the following folders inside of src
-  - HOCs
+  - hocs
   - components
 
 ## HOC 1
@@ -25,12 +25,12 @@ We will create a high-order component that will check if a user is authenticated
 
 ### Step 1
 
-- Inside the HOCs folder, create the following file:
+- Inside the hocs folder, create the following file:
   - withAuthentication.js
 - Import `React`.  React must be in scope when using jsx.
 - Create a function `withAuthentication` that takes in a component as it's parameter `WrappedComponent` and returns a functional component.
 - The functional component should return the `WrappedComponent` that was passed into the `withAuthentication` function if `props.isAuthenticated` is true, and `null` if it is false.
-- With HOCs it is important that you pass any props that will be passed to the component made from using the HOC, to the component that is passed into the HOC.  You can do this with object destructuring.
+- With HOCs it is important that you pass along any props that will be passed to the component created from using the HOC, to the component that is passed into the HOC.  You can do this with object destructuring.
 
 ### Solution
 
@@ -96,7 +96,7 @@ export default withAuthentication(SuperSecret)
 ### Step 3
 
 - In App.js, bring in our newly created `SuperSecret` component and add it to the jsx code in the render method.
-- Give it the prop `isAuthenticated` and set the value to `true`.  In the browser, you should now see the secret component. Next, set it to false, and you can see that the component no longer shows in the browser.
+- Give it the prop `isAuthenticated` and set the value to `true`.  In the browser, you should now see the secret component. Next, set `isAuthenticated` to false, and you can see that the component no longer shows in the browser.
 
 ### Solution
 
@@ -134,12 +134,12 @@ Now we will create a higher-order component that will add toggle logic to a comp
 
 ### Step 1
 
-- Inside the HOCs folder, create the following file:
+- Inside the hocs folder, create the following file:
   - withToggle.js
 - Import `React` and `Component`.
 - Create a function `withToggle` that takes in a component as it's parameter `WrappedComponent` and returns a class component `WithToggle`.  `WithToggle` should have state with one property `toggle` that is set to `false`.
-- `WithToggle` should have a method `handleChange` that will update the component's state and change the value of `toggle` to the opposite of its current value.
-- In the render method, create an object named `toggle` that will store the `value` of `this.state.toggle`, and the `handleChange` method.  Then, return the `WrappedComponent` and pass the `toggle` object as a prop.  Make sure to also pass on the rest of the props `{ ...props }`
+- `WithToggle` should have a method, `handleChange`, that will update the component's state and change the value of `toggle` to the opposite of its current value.
+- In the render method, create an object named `toggle` that will store the `value` of `this.state.toggle`, and the `handleChange` method.  Then, return the `WrappedComponent` and pass the `toggle` object as a prop.  Make sure to also pass along the rest of the props `{ ...props }`
 
 ### Solution
 
@@ -216,7 +216,7 @@ export default function (WrappedComponent) {
     }
   }
   ```
-- Let's walk through what is happening here.  First, we are grabbing the toggle object from props which we will have access to once we pass `AccordianMenu` into `withToggle`.  Then, we have a click event on the first child `div` so when we click on it, the `handleChange` method from `withToggle` will be invoked and update the value of `toggle`.  Below that, we are checking to see if the value of `toggle` is `truthy`, and if it is, we render a `div` for the body.  Notice that between the body `div` tags we are rendering `props.childred`.  `props.children` refers to the elements between the opening and closing tags of the `AccordianMenu` component, when we use the component. 
+- Let's walk through what is happening here.  First, we are grabbing the toggle object from props which we will have access to once we pass `AccordianMenu` into `withToggle`.  Then, we have a click event on the first child `div` so when we click on it, the `handleChange` method, from `withToggle`, will be invoked, and update the value of `toggle`.  Below that, we are checking to see if the value of `toggle` is `truthy`, and if it is, we render a `div` for the body.  Notice that between the body `div` tags we are rendering `props.childred`.  `props.children` refers to the elements between the opening and closing tags of the `AccordianMenu` component, when we use the component. 
 - Create a new component by invoking `withToggle` and passing in `AccordianMenu`.  This new component will be the `export default`.
 
 ### Solution
