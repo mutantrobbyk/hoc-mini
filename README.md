@@ -13,7 +13,7 @@ In this project, we will practice making higher-order components (HOC) to better
   - Delete `registerServiceWorker();`
 - Run `npm start`.
 - In a seperate terminal, `cd` into the project directory.
-- Create the following folders inside of src
+- Create the following folders inside of `./src`
   - hocs
   - components
 
@@ -25,12 +25,13 @@ We will create a high-order component that will check if a user is authenticated
 
 ### Step 1
 
-- Inside the hocs folder, create the following file:
+- Inside `./src/hocs` folder, create the following file:
   - withAuthentication.js
 - Import `React`.  React must be in scope when using jsx.
-- Create a function `withAuthentication` that takes in a component as it's parameter `WrappedComponent` and returns a functional component.
-- The functional component should return the `WrappedComponent` that was passed into the `withAuthentication` function if `props.isAuthenticated` is true, and `null` if it is false.
+- Create a function `withAuthentication` that takes in a component as a parameter called `WrappedComponent`. `withAuthentication` should return another function that accepts a `props` parameter.
+- The inner function should return the `WrappedComponent` that was passed into the `withAuthentication` function if `props.isAuthenticated` is true, and `null` if it is false.
 - With HOCs it is important that you pass along any props that will be passed to the component created from using the HOC, to the component that is passed into the HOC.  You can do this with object destructuring.
+  - E.G. `<WrappedComponent {...props}>`
 
 ### Solution
 
