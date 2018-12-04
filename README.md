@@ -136,7 +136,7 @@ Now we will create a higher-order component that will add toggle logic to a comp
 
 ### Step 1
 
-- Inside the hocs folder, create the following file:
+- Inside the `./src/hocs` folder, create the following file:
   - withToggle.js
 - Import `React` and `Component`.
 - Create a function `withToggle` that takes in a component as it's parameter `WrappedComponent` and returns a class component `WithToggle`.  `WithToggle` should have state with one property `toggle` that is set to `false`.
@@ -157,13 +157,13 @@ export default function (WrappedComponent) {
     state = {
       toggle: false
     }
-  
+
     handleChange = e => {
       this.setState({
         toggle: !this.state.toggle
       })
     }
-  
+
     render() {
       let toggle = {
         value: this.state.toggle,
@@ -179,12 +179,12 @@ export default function (WrappedComponent) {
 
 ### Step 2
 
-- Inside the components folder, create the following files:
+- Inside the `./src/components` folder, create the following files:
   - OnOffButton.js
   - AccordianMenu.js
 - In `OnOffButton.js` import `React` and `withToggle`.  Then, create a functional component `OnOffButton`, that returns the following:
   ```jsx
-  ( 
+  (
     <button onClick={toggle.handleChange}>
       <h1>{ toggle.value ? 'ON' : 'OFF' }</h1>
     </button>
@@ -218,7 +218,7 @@ export default function (WrappedComponent) {
     }
   }
   ```
-- Let's walk through what is happening here.  First, we are grabbing the toggle object from props which we will have access to once we pass `AccordianMenu` into `withToggle`.  Then, we have a click event on the first child `div` so when we click on it, the `handleChange` method, from `withToggle`, will be invoked, and update the value of `toggle`.  Below that, we are checking to see if the value of `toggle` is `truthy`, and if it is, we render a `div` for the body.  Notice that between the body `div` tags we are rendering `props.childred`.  `props.children` refers to the elements between the opening and closing tags of the `AccordianMenu` component, when we use the component. 
+- Let's walk through what is happening here.  First, we are grabbing the toggle object from props which we will have access to once we pass `AccordianMenu` into `withToggle`.  Then, we have a click event on the first child `div` so when we click on it, the `handleChange` method, from `withToggle`, will be invoked, and update the value of `toggle`.  Below that, we are checking to see if the value of `toggle` is `truthy`, and if it is, we render a `div` for the body.  Notice that between the body `div` tags we are rendering `props.childred`.  `props.children` refers to the elements between the opening and closing tags of the `AccordianMenu` component, when we use the component.
 - Create a new component by invoking `withToggle` and passing in `AccordianMenu`.  This new component will be the `export default`.
 
 ### Solution
@@ -341,7 +341,7 @@ If you see a problem or a typo, please fork, make the necessary changes, and cre
 
 ## Copyright
 
-© DevMountain LLC, 2017. Unauthorized use and/or duplication of this material without express and written permission from DevMountain, LLC is strictly prohibited. Excerpts and links may be used, provided that full and clear credit is given to DevMountain with appropriate and specific direction to the original content.
+© DevMountain LLC, 2018. Unauthorized use and/or duplication of this material without express and written permission from DevMountain, LLC is strictly prohibited. Excerpts and links may be used, provided that full and clear credit is given to DevMountain with appropriate and specific direction to the original content.
 
 <p align="center">
 <img src="https://s3.amazonaws.com/devmountain/readme-logo.png" width="250">
