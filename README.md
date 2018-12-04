@@ -53,11 +53,11 @@ export default function withAuthentication(WrappedComponent) {
 
 ### Step 2
 
-- Inside the components folder, create the following file:
+- Inside the `./src/components` folder, create the following file:
   - SuperSecret.js
-- Because this component is "super secret", we only want authenticated users to see it.  So we will use the `withAuthentication` HOC to add logic to our component.  
+- Because this component is "super secret", we only want authenticated users to see it.  So we will use the `withAuthentication` HOC to add logic to our component.
 - import `React` and `withAuthentication`.
-- create a functional component called `SuperSecret` that renders the followng:
+- create a functional component called `SuperSecret` that accepts a `props` argument and renders the followng:
 ```jsx
 (
   <div style={{ margin: 20, border: '1px solid green'}}>
@@ -96,8 +96,9 @@ export default withAuthentication(SuperSecret)
 
 ### Step 3
 
-- In App.js, bring in our newly created `SuperSecret` component and add it to the jsx code in the render method.
-- Give it the prop `isAuthenticated` and set the value to `true`.  In the browser, you should now see the secret component. Next, set `isAuthenticated` to false, and you can see that the component no longer shows in the browser.
+- In `./src/App.js`, bring in our newly created `SuperSecret` component and add it to the jsx code in the render method.
+- Give it the prop `isAuthenticated` and set the value to `true`.  In the browser, you should now see the secret component.
+- Next, set `isAuthenticated` to false, and you can see that the component no longer shows in the browser.
 
 ### Solution
 
