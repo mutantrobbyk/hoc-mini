@@ -30,7 +30,7 @@ We will create a high-order component that will check if a user is authenticated
 - Import `React`.  React must be in scope when using jsx.
 - Create a function `withAuthentication` that takes in a component as a parameter called `WrappedComponent`. `withAuthentication` should return another function that accepts a `props` parameter.
 - The inner function should return the `WrappedComponent` that was passed into the `withAuthentication` function if `props.isAuthenticated` is true, and `null` if it is false.
-- With HOCs it is important that you pass along any props that will be passed to the component created from using the HOC, to the component that is passed into the HOC.  You can do this with object destructuring.
+- With HOCs it is important that you pass along any props that will be passed to the component created from using the HOC, to the component that is passed into the HOC.  You can do this using the spread operator.
   - E.G. `<WrappedComponent {...props}>`
 
 ### Solution
